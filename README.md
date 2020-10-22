@@ -1,4 +1,4 @@
-# admin-element
+# element-admin
 
 ## Project setup
 ```
