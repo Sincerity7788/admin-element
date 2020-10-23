@@ -8,6 +8,7 @@ import './plugins/element.js'
 
 // 引入全局配置文件
 import $conf from './common/config/config';
+console.log(Vue);
 
 Vue.config.productionTip = false;
 
