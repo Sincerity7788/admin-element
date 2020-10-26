@@ -14,7 +14,6 @@ Vue.config.productionTip = false;
 // 挂在到vue的原型上
 Vue.prototype.$conf = $conf;
 
-
 Vue.use(ElementUI);
 new Vue({
   router,
