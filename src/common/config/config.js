@@ -13,8 +13,13 @@ export default {
                         pathName: 'index'
                     },
                     { 
+                        name: '相册管理',
+                        icon: 'el-icon-picture',
+                        pathName: 'image'
+                    },
+                    { 
                         name: '商品列表',
-                        icon: 'el-icon-menu',
+                        icon: 'el-icon-s-goods',
                         pathName: 'shop_goods_list'
                     }
                 ]

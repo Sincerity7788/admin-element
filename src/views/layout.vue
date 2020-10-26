@@ -14,7 +14,6 @@
                 <el-menu-item :index=" index | numTostring " v-for="( item, index ) in navBar.list" :key='index'>
                     {{ item.name }}
                 </el-menu-item>
-               
                 <el-submenu index="100">
                     <template slot="title">
                         <el-avatar size="small" src="https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png"></el-avatar>
@@ -32,13 +31,13 @@
                          style="height:100%"
                         >
                         <el-menu-item :index=" index | numTostring " v-for="( item, index ) in submenuList" :key='index'>
-                            <i class="el-icon-menu"></i>
+                            <i :class="item.icon"></i>
                             <span slot="title">{{item.name}}</span>
                         </el-menu-item>
 
                     </el-menu>
                 </el-aside>
-                <el-main class="bg-light">
+                <el-main class="bg-light" style="padding-bottom:60px;position:relative">
                     <!-- 面包屑导航 -->
                     <div class="border-bottom mb-3 bg-white"
                      style="padding:20px;margin:-20px"
@@ -46,7 +45,7 @@
                      >
                         <el-breadcrumb separator-class="el-icon-arrow-right">
                             <el-breadcrumb-item
-                            v-for="( item, index ) in bran" :key='index' 
+                            v-for="( item, index ) in bran" :key='index'
                             :to="{ path: item.path }">{{ item.title }}</el-breadcrumb-item>
                         </el-breadcrumb>
                     </div>
@@ -54,7 +53,7 @@
                     <router-view></router-view>
                     <!-- 长度到了一定位置，出现按回到顶部按钮 -->
                     <el-backtop target=".el-main" :bottom="100">
-                        
+
                         <div
                         style="height: 100%;
                             width: 100%;
@@ -66,14 +65,14 @@
                         >
                         UP
                         </div>
-                    </el-backtop>   
-                    
+                    </el-backtop>
+
                 </el-main>
             </el-container>
         </el-container>
-       
+
     </div>
-    
+
 </template>
 
 
@@ -91,9 +90,9 @@ export default {
             // 获取当前页面路由信息
             this.getRouteInfo();
             // 存储当前选中的下标
-            localStorage.setItem('navActive',JSON.stringify( { 
+            localStorage.setItem('navActive',JSON.stringify( {
                 top: this.navBar.active,
-                left: this.submenu 
+                left: this.submenu
             } ))
         }
     },
@@ -132,6 +131,12 @@ export default {
         },
         // 顶部菜单栏点击事件
         handleSelect( key, keyPath ){
+            if( key === '100-1' ){
+                return console.log('修改资料')
+            }
+            if( key === '100-2' ){
+                return console.log('退出')
+            }
             // 修改当前顶部选中下标
             this.navBar.active = key;
             this.submenu = '0';
@@ -142,13 +147,13 @@ export default {
         },
         // 获取当前路由信息
         getRouteInfo(){
-            
+
             // 保存当前路由信息
             let routeArr = this.$route.matched.filter( item => item.name );
             // 定义一个新数组保存处理好的路由信息
             let newRouteArr = [];
             // 循环处理路由信息
-            routeArr.forEach( ( item, index ) => { 
+            routeArr.forEach( ( item, index ) => {
                 // 判断当前路由是layout或者index
                 if( item.name === 'layout' || item.name === 'index' ){ return }
                 // 添加一项数据到新数组中
@@ -160,23 +165,23 @@ export default {
              } );
 
             // 判断当前数组长度大于零，就给数组首位添加一个首页信息
-            if ( newRouteArr.length ) { 
+            if ( newRouteArr.length ) {
                 newRouteArr.unshift({
                     name: 'index',
                     path: '/index',
                     title: '后台首页'
-                }) 
-               
+                })
+
             }
             // 保存到data中
             this.bran = newRouteArr;
 
-            
+
             // console.log(newRouteArr);
         },
         // 获取本地存储的菜单选中
         __initNavActive(){
-           
+
             let r = localStorage.getItem('navActive');
             // 判断当前本地是否存储了下标
             if ( r ) {

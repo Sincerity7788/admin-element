@@ -44,15 +44,83 @@
                     </div>
                 </el-card> -->
             </el-col>
-            <el-col :span='12' style='height:370px'>
-                <el-card class="box-card" >
+            <el-col :span='12' >
+                <el-card class="box-card" style='height:370px' shadow='never'>
                     <div slot="header" class="clearfix">
                         <span>卡片名称</span>
                         <el-button style="float: right; padding: 3px 0" type="text">操作按钮</el-button>
                     </div>
-                    <div >
+                    <!-- 统计图表 -->
+                    <div ref='index_tb_info' style="width: 100%;min-height: 280px">
                         
                     </div>
+                </el-card>
+            </el-col>
+        </el-row>
+        <!-- 销售情况统计/ 单商品销售情况 -->
+        <el-row :gutter='20' class="my-3 ">
+            <el-col :span='12'>
+                <el-card class="box-card" shadow='never'>
+                    <div slot="header" class="clearfix">
+                        <span>卡片名称</span>
+                        <el-button style="float: right; padding: 3px 0" type="text">操作按钮</el-button>
+                    </div>
+                    <div>
+                        <div class="border d-flex">
+                            <p class="py-4 px-3 mb-0 bg-light text-muted">昨日销量</p>
+                            <div class="d-flex flex-column" style="flex:1" >
+                                <div class="d-flex align-items-center pl-3 border-bottom" style="flex:1">
+                                    <span class="text-muted pr-2">订单量(件)</span>
+                                    22
+                                </div>
+                                <div style="flex:1" class="d-flex align-items-center pl-3">
+                                    <span class="text-muted pr-2">订单量(件)</span>
+                                    22
+                                </div>
+                            </div>
+                        </div>
+                        <div class="border d-flex mt-3">
+                            <p class="py-4 px-3 mb-0 bg-light text-muted">昨日销量</p>
+                            <div class="d-flex flex-column" style="flex:1" >
+                                <div class="d-flex align-items-center pl-3 border-bottom" style="flex:1">
+                                    <span class="text-muted pr-2">订单量(件)</span>
+                                    22
+                                </div>
+                                <div style="flex:1" class="d-flex align-items-center pl-3">
+                                    <span class="text-muted pr-2">订单量(件)</span>
+                                    22
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </el-card>
+            </el-col>
+            <el-col :span='12'>
+                <el-card class="box-card" shadow='never'>
+                    <div slot="header" class="clearfix">
+                        <span>单品销售排名</span>
+                        <el-button style="float: right; padding: 3px 0" type="text">操作按钮</el-button>
+                    </div>
+                    <el-table
+                    :data="tableData"
+                    height="165"
+                    border
+                    style="width: 100%">
+                    <el-table-column
+                    type='index'
+                    label="#"
+                    width="50">
+                    </el-table-column>
+                    <el-table-column
+                    prop="name"
+                    label="商品名称">
+                    </el-table-column>
+                    <el-table-column
+                    prop="num"
+                    label="销量"
+                    width='80'>
+                    </el-table-column>
+                </el-table>
                 </el-card>
             </el-col>
         </el-row>
@@ -60,8 +128,19 @@
 </template>
 
 <script>
+// 导入echarts
+import echarts from 'echarts';
     export default{
         data: () => ({
+            tableData: [
+                { name: '小天才手表', num: '12' },
+                { name: '天王手表', num: '12' },
+                { name: '浪琴手表', num: '12' },
+                { name: '苹果手机', num: '12' },
+                { name: '三星手机', num: '12' },
+                { name: '小米手机', num: '12' },
+                { name: '华为手机', num: '12' },
+            ],
             counts: [
                 { icon: 'el-icon-user-solid', num: 30, desc:'关注人数(个)', color: 'bg-primary' },
                 { icon: 'el-icon-s-finance', num: 40, desc:'订单总数(笔)', color: 'bg-success' },
@@ -97,7 +176,103 @@
             getCol( total ){
                 return `col-${12 / total}`
             }
+        },
+        mounted(){
+            this.init_tb()
+        },
+        methods:{
+            // 初始化图表插件
+            init_tb(){
+                // 获取dom节点
+                let myChart = echarts.init(this.$refs.index_tb_info)
+ 
+                // 指定图表的配置项和数据
+                let option =  {
+                    tooltip: {
+                        trigger: 'axis',
+                        axisPointer: {
+                            type: 'cross',
+                            label: {
+                                backgroundColor: '#6a7985'
+                            }
+                        }
+                    },
+                    legend: {
+                        data: ['邮件营销', '联盟广告', '视频广告', '直接访问', '搜索引擎']
+                    },
+                    toolbox: {
+                        feature: {
+                            saveAsImage: {}
+                        }
+                    },
+                    grid: {
+                        left: '3%',
+                        right: '4%',
+                        bottom: '3%',
+                        containLabel: true
+                    },
+                    xAxis: [
+                        {
+                            type: 'category',
+                            boundaryGap: false,
+                            data: ['周一', '周二', '周三', '周四', '周五', '周六', '周日']
+                        }
+                    ],
+                    yAxis: [
+                        {
+                            type: 'value'
+                        }
+                    ],
+                    series: [
+                        {
+                            name: '邮件营销',
+                            type: 'line',
+                            stack: '总量',
+                            areaStyle: {},
+                            data: [120, 132, 101, 134, 90, 230, 210]
+                        },
+                        {
+                            name: '联盟广告',
+                            type: 'line',
+                            stack: '总量',
+                            areaStyle: {},
+                            data: [220, 182, 191, 234, 290, 330, 310]
+                        },
+                        {
+                            name: '视频广告',
+                            type: 'line',
+                            stack: '总量',
+                            areaStyle: {},
+                            data: [150, 232, 201, 154, 190, 330, 410]
+                        },
+                        {
+                            name: '直接访问',
+                            type: 'line',
+                            stack: '总量',
+                            areaStyle: {},
+                            data: [320, 332, 301, 334, 390, 330, 320]
+                        },
+                        {
+                            name: '搜索引擎',
+                            type: 'line',
+                            stack: '总量',
+                            label: {
+                                normal: {
+                                    show: true,
+                                    position: 'top'
+                                }
+                            },
+                            areaStyle: {},
+                            data: [820, 932, 901, 934, 1290, 1330, 1320]
+                        }
+                    ]
+                };
+
+                // 使用刚指定的配置项和数据显示图表。
+                myChart.setOption(option);
+                    }
         }
+
     }
 </script>
 
