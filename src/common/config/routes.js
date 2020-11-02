@@ -9,14 +9,19 @@ let routes =  [
           meta: { title: '后台首页' },
           component: 'index/index'
         },
+        
+        {
+          meta: { title: '相册管理' },
+          component: 'image/index'
+        },
         {
           meta: { title: '商品列表' },
           component: 'shop/goods/list'
         },
         {
-          meta: { title: '相册管理' },
-          component: 'image/index'
-        }
+          meta: { title: '创建商品' },
+          component: 'shop/goods/create'
+        },
       ]
     },
     {

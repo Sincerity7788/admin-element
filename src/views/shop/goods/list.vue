@@ -7,7 +7,10 @@
 					<buttonSearch ref='buttonSearch' placeholder='要搜索的商品名称' @search='searchEvent'>
 						<!-- 左边 -->
 						<template #left>
-							<el-button type="success" size="small">发布商品</el-button>
+							<router-link :to="{ name:'shop_goods_create' }">
+								<el-button type="success" size="small">发布商品</el-button>
+							</router-link>
+							
 							<el-button type="danger" size="small">批量删除</el-button>
 							<el-button size="small">下架</el-button>
 							<el-button size="small">上架</el-button>
@@ -80,8 +83,11 @@
 						 <el-table-column
 						   label="商品状态"
 						   align="center">
-						   <template slot-scope='scpoe'>
-						   		 <el-button type="success"size="mini" plain @click='changeStatus(scope.row)'>上架</el-button>
+						   <template slot-scope='scope'>
+							   <el-button type="success" size="mini">审核通过</el-button>
+							   <el-button type="danger" size="mini" class="ml-0 mt-2">审核拒绝</el-button>
+						   		 <!-- <el-button :type=" scope.row.status === 1 ? 'success' : 'danger'" size="mini" 
+									plain @click='changeStatus(scope.row)'>{{ scope.row.status === 0 ? '下架' : '上架' }}</el-button> -->
 						   </template>
 						 </el-table-column>
 						 <el-table-column
@@ -106,7 +112,19 @@
 						   </template>
 						 </el-table-column>
                        </el-table>
-				   
+				   <el-footer class="d-flex px-0 position-fixed bg-white"
+				    style="bottom:0;left:200px;right:0;z-index:999">
+
+						<div class="d-flex align-items-center pl-3" style="flex:1">
+							<el-pagination
+								:current-page="tableData[tabIndex].currentPage"
+								:page-sizes="[100, 200, 300, 400]"
+								:page-size="100"
+								layout="total, sizes, prev, pager, next, jumper"
+								:total="400">
+							</el-pagination>
+						</div>
+					</el-footer>
 				   
                 </el-tab-pane>
             </el-tabs>
@@ -148,7 +166,7 @@ export default{
 		__getData(){
 			
 			for( let i = 0; i < this.tabs.length;i++ ){
-				console.log(this.tableData);
+				// console.log(this.tableData);
 				this.tableData.push({
 					currentPage:1,
 					list:[]
@@ -176,7 +194,7 @@ export default{
 		},
 		// 上下架
 		changeStatus(item){
-			item.status 
+			item.status = item.status === 1 ? 0 : 1;
 		},
 		// 删除列表指定一项
 		deleteItem( index ){
