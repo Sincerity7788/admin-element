@@ -1,5 +1,5 @@
 <template>
-    <div class="bg-white" style="margin:-20px; margin-top:-1rem;">
+    <div class="bg-white" style="margin:-20px; margin-top:-1rem;margin-bottom: 0!important;">
         <div class="px-3">
             <el-tabs v-model="tabIndex" @tab-click="handleClick">
                 <el-tab-pane :label="tab.name"
@@ -42,7 +42,7 @@
 						</template>
 					</buttonSearch>
                     <el-table border class="mt-3"
-                         :data="tableData"
+                         :data="tableData[tabI].list"
                          style="width: 100%" @selection-change="handleSelectionChange">
 						  <el-table-column
 						       type="selection"
@@ -73,14 +73,16 @@
 						   align="center">
                          </el-table-column>
 						 <el-table-column
-						   prop="order"
+							prop="order"
 						   label="商品排序"
 						   align="center">
 						 </el-table-column>
 						 <el-table-column
-						   prop="status"
 						   label="商品状态"
 						   align="center">
+						   <template slot-scope='scpoe'>
+						   		 <el-button type="success"size="mini" plain @click='changeStatus(scope.row)'>上架</el-button>
+						   </template>
 						 </el-table-column>
 						 <el-table-column
                            prop="stock"
@@ -94,7 +96,14 @@
 						 </el-table-column>
 						 <el-table-column
 						   label="操作"
-						   align="center">
+						   align="center"
+						   width="150">
+						   <template slot-scope='scope'>
+							   <el-button-group>
+								   <el-button size="mini" type="primary" plain>修改</el-button>
+								   <el-button size="mini" type="danger" plain @click='deleteItem(scope.$index)'>删除</el-button>
+							   </el-button-group>
+						   </template>
 						 </el-table-column>
                        </el-table>
 				   
@@ -127,24 +136,63 @@ export default{
            type: '',// 商品分类
            category: '',// 商品类型
         },
-		 tableData: [
-			 {
-				title:'商品名字',
-				cover:'https://img13.360buyimg.com/n7/jfs/t1/150526/26/3958/83972/5f9011b0E34f13e87/7eef266cecb887db.jpg',
-				create_time:'2020-10-28',
-				category:'手机',
-				type:'普通商品',
-				sale_count:200,
-				order:100,
-				status:1,
-				stock:200,
-				pprice: 1000,
-				ischeck:1
-			 }
-		 ],
+		 tableData: [ ],
 		  multipleSelection:[]
     }),
+	created() {
+		this.__getData()
+	},
     methods:{
+		
+		// 生成list数据
+		__getData(){
+			
+			for( let i = 0; i < this.tabs.length;i++ ){
+				console.log(this.tableData);
+				this.tableData.push({
+					currentPage:1,
+					list:[]
+				})
+				
+				// 循环填充假数据
+				for( let j = 0; j < 20;j++ ){
+					this.tableData[i].list.push(
+					{
+						id:j,
+						title:'商品名字'+ i + '-' + j,
+						cover:'https://img13.360buyimg.com/n7/jfs/t1/150526/26/3958/83972/5f9011b0E34f13e87/7eef266cecb887db.jpg',
+						create_time:'2020-10-28',
+						category:'手机',
+						type:'普通商品',
+						sale_count:200,
+						order:100,
+						status:1,
+						stock:200,
+						pprice: 1000,
+						ischeck:1
+					})
+				}
+			}
+		},
+		// 上下架
+		changeStatus(item){
+			item.status 
+		},
+		// 删除列表指定一项
+		deleteItem( index ){
+			 this.$confirm('此操作将永久删除该项, 是否继续?', '温馨提示', {
+			          confirmButtonText: '确定',
+			          cancelButtonText: '取消',
+			          type: 'error'
+			        }).then(() => {
+						this.tableData[this.tabIndex].list.splice(index,1)
+			          this.$message({
+			            type: 'success',
+			            message: '删除成功!'
+			          });
+			        })
+			
+		},	
         // 选项卡切换事件
         handleClick(tab, event){
             this.tabIndex = tab.index;
