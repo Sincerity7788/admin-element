@@ -9,45 +9,60 @@
             <el-tab-pane label="基础设置" >
                 <el-form ref="form" label-width="80px">
                     <el-form-item label="商品名称">
-                        <el-input class="w-50" v-model="title" placeholder="请输入商品名称 不超过60个字符"></el-input>
+                        <el-input class="w-50" :value="title" size="small"
+                         @input="vModel('title',$event)"
+                        placeholder="请输入商品名称 不超过60个字符"></el-input>
                     </el-form-item>
                     <el-form-item label="商品分类">
                         <el-cascader
-                            v-model="category"
+                          size="small"
+                             :value="category"
+                             @input="vModel('category',$event)"
                             :options="options"
                             @change="handleChange">
                         </el-cascader>
                     </el-form-item>
                     <el-form-item label="商品描述">
-                        <el-input v-model="desc" type="textarea" class="w-50" placeholder="请输入商品描述"></el-input>
+                        <el-input :value="desc" @input="vModel('desc',$event)"
+                         type="textarea" size="small"
+                        class="w-50" placeholder="请输入商品描述"></el-input>
                     </el-form-item>
                     <el-form-item label="商品单位">
-                        <el-input v-model="unit"  class="w-50" placeholder="请输入商品单位"></el-input>
+                        <el-input :value="unit"  class="w-50" size="small"
+                        @input="vModel('unit',$event)"
+                        placeholder="请输入商品单位"></el-input>
                     </el-form-item>
                     <el-form-item label="总库存">
-                        <el-input v-model="stock"  type="number" class="w-25">
+                        <el-input :value="stock"  type="number" size="small"
+                        @input="vModel('stock',$event)" class="w-25">
                              <template slot="append">件</template>
                         </el-input>
                     </el-form-item>
                     <el-form-item label="库存预警">
-                        <el-input v-model="min_stock"  type="number" class="w-25">
+                        <el-input :value="min_stock"  type="number" size="small" 
+                         @input="vModel('min_stock',$event)"
+                        class="w-25">
                              <template slot="append">件</template>
                         </el-input>
                     </el-form-item>
                     <el-form-item label="库存显示">
-                        <el-radio-group v-model="display_stoce">
+                        <el-radio-group :value="display_stoce"
+                         @input="vModel('display_stoce',$event)"
+                         size="small">
                             <el-radio :label="1" border>是</el-radio>
                             <el-radio :label="0" border>否</el-radio>
                         </el-radio-group>
                     </el-form-item>
                     <el-form-item label="是否上架">
-                        <el-radio-group v-model="display_stoce">
+                        <el-radio-group :value="status" 
+                        @input="vModel('status',$event)" size="small">
                             <el-radio :label="1" border>放入仓库</el-radio>
                             <el-radio :label="0" border>立即上架</el-radio>
                         </el-radio-group>
                     </el-form-item>
                     <el-form-item label="运费模板">
-                        <el-select v-model="express" placeholder="请选择运费模板">
+                        <el-select :value="express" size="small" 
+                        @input="vModel('express',$event)" placeholder="请选择运费模板">
                             <el-option label="模板一" value="模板一"> </el-option>
                             <el-option label="模板二" value="模板二"> </el-option>
                         </el-select>
@@ -58,7 +73,8 @@
                 <!-- 规格选项 -->
                 <el-form label-width="80px">
                      <el-form-item label="商品规格">
-                         <el-radio-group v-model="skus_type">
+                         <el-radio-group :value="skus_type" size="small"
+                          @input="vModel('skus_type',$event)">
                             <el-radio-button :label="1" border>单一规格</el-radio-button>
                             <el-radio-button :label="0" border>多规格</el-radio-button>
                         </el-radio-group>
@@ -68,27 +84,32 @@
                 <template v-if="skus_type === 1">
                     <el-form label-width="80px" class="w-25">
                         <el-form-item label="市场价格">
-                            <el-input type='number' >
+                            <el-input type='number' size="small" :value="oprice" 
+                            @input="vModel('oprice',$event)">
                                 <template slot="append">元</template>
                             </el-input>
                         </el-form-item>
                         <el-form-item label="销售价格">
-                            <el-input type='number' >
+                            <el-input type='number' size="small" :value="pprice"
+                            @input="vModel('pprice',$event)">
                                 <template slot="append">元</template>
                             </el-input>
                         </el-form-item>
                         <el-form-item label="成本价格">
-                            <el-input type='number' >
+                            <el-input type='number' size="small" :value="cprice"
+                            @input="vModel('cprice',$event)">
                                 <template slot="append">元</template>
                             </el-input>
                         </el-form-item>
                         <el-form-item label="商品重量">
-                            <el-input type='number' >
+                            <el-input type='number' size="small" :value="weight"
+                            @input="vModel('weight',$event)">
                                 <template slot="append">公斤</template>
                             </el-input>
                         </el-form-item>
                         <el-form-item label="商品体积">
-                            <el-input type='number' >
+                            <el-input type='number' size="small" :value="volume"
+                            @input="vModel('volume',$event)">
                                 <template slot="append">立方米</template>
                             </el-input>
                         </el-form-item>
@@ -96,43 +117,18 @@
                 </template>
                 <!-- 多规格 -->
                 <template v-else>
-                        <el-form label-width="80px"> 
-                   
-                        <el-form-item label="添加规格">
-                            <div class="card" style="line-height:1.2">
-                                <div class="card-header d-flex align-items-center">
-                                    <span>规格项：</span>
-                                    <el-input size="mini" style="width:200px">
-                                        <el-button slot='append' icon="el-icon-more"></el-button>
-                                    </el-input>
-                                    <el-radio-group size="mini" style="margin-bottom:-10px;" 
-                                    class="ml-2 mr-auto">
-                                        <el-radio label="无"></el-radio>
-                                        <el-radio label="颜色"></el-radio>
-                                        <el-radio label="图片"></el-radio>
-                                    </el-radio-group>
-                                    <el-button icon="el-icon-top" size="mini"></el-button>
-                                    <el-button icon="el-icon-bottom" size="mini"></el-button>
-                                    <el-button size="mini" type="text">删除</el-button>
-                                    
-                                </div>
-                                <div class="card-body">
-                                    <div>
-                                        <el-button icon="el-icon-plus" size="mini" type="text">添加规格值</el-button>
-                                    </div>
-                                </div>
-                            </div>
-                            <el-button size="mini" type="success">添加规格</el-button>
-                        </el-form-item>
-                        <el-form-item label="批量设置">
-                            <el-button type="text">销售价</el-button>
-                            <el-button type="text">市场价</el-button>
-                            <el-button type="text">成本价</el-button>
-                            <el-button type="text">库存</el-button>
-                            <el-button type="text">体积</el-button>
-                            <el-button type="text">重量</el-button>
-                        </el-form-item>
-                        <el-form-item label='规格设置'>规格设置</el-form-item>
+                  <!-- 规格卡片 -->
+                  <skuCard></skuCard>
+                    <el-form label-width="80px"> 
+                      <el-form-item label="批量设置">
+                          <el-button type="text">销售价</el-button>
+                          <el-button type="text">市场价</el-button>
+                          <el-button type="text">成本价</el-button>
+                          <el-button type="text">库存</el-button>
+                          <el-button type="text">体积</el-button>
+                          <el-button type="text">重量</el-button>
+                      </el-form-item>
+                      <el-form-item label='规格设置'>规格设置</el-form-item>
                     </el-form>
                 </template>
                 
@@ -146,8 +142,10 @@
 </template>
 
 <script>
+// 导入规格卡片
+import skuCard from '@/components/shop/goods/suk-card.vue';
 // 导入vuex的方法
-import { mapState } from 'vuex'
+import { mapState, mapMutations } from 'vuex';
     export default{
         data:()=>({
             tabIndex:0,// 顶部菜单栏切换默认下标
@@ -349,6 +347,9 @@ import { mapState } from 'vuex'
         }],
             
         }),
+        components:{
+          skuCard
+        },
         computed:{
             ...mapState({
                 skus_type: state => state.goods_create.skus_type,// 多规格还是单规格
@@ -360,13 +361,23 @@ import { mapState } from 'vuex'
                 min_stock: state => state.goods_create.min_stock,// 库存预警
                 display_stoce: state => state.goods_create.display_stoce,// 库存显示
                 status: state => state.goods_create.status,//是否上架
-                express:state => state.goods_create.express,// 运费模板
+                express: state => state.goods_create.express,// 运费模板
+                oprice: state => state.goods_create.oprice,// 市场价格
+                pprice: state => state.goods_create.pprice,// 销售价格
+                cprice: state => state.goods_create.cprice,// 成本价格
+                weight: state => state.goods_create.weight,// 重量
+                volume: state => state.goods_create.volume,// 体积
             }),
         },
         mounted(){
             // console.log(this.cc)
         },
         methods:{
+            ...mapMutations(['vModelState']),
+            // 替换v-model事件
+            vModel( key, value ){
+              this.vModelState( { key, value } )
+            },
             // 顶部菜单栏切换事件
             handleClick(){
 
