@@ -1771,6 +1771,11 @@ autoprefixer@^9.8.6:
     postcss "^7.0.32"
     postcss-value-parser "^4.1.0"
 
+awe-dnd@^0.3.4:
+  version "0.3.4"
+  resolved "https://registry.npm.taobao.org/awe-dnd/download/awe-dnd-0.3.4.tgz#5913d12e0bd32f3e7e4f6361a870e8ea623496eb"
+  integrity sha1-WRPRLgvTLz5+T2NhqHDo6mI0lus=
+
 aws-sign2@~0.7.0:
   version "0.7.0"
   resolved "https://registry.npm.taobao.org/aws-sign2/download/aws-sign2-0.7.0.tgz#b46e890934a9591f2d2f6f86d7e6a9f1b3fe76a8"

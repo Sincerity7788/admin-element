@@ -1,3 +1,5 @@
+// 导入方法
+import $util from '@/common/util.js';
 export default{
     state: {
         skus_type:0,// 多规格还是单规格
@@ -22,7 +24,18 @@ export default{
             {
                 name:'', // 规格名称
                 type:0, // 规格属性 0无 1颜色 2图片
-                list:[],// 规格属性列表
+                list:[
+                    {
+                        name:'名称',
+                        color:'',
+                        img:''
+                    },
+                    {
+                        name:'名称',
+                        color:'',
+                        img:''
+                    }
+                ],// 规格属性列表
             }
         ]
     },
@@ -46,6 +59,30 @@ export default{
         // 修改规格卡片
         vModelSkuCard( state, { key, index, value } ){
             state.sku_card_data[index][key] = value
+        },
+        // 规格卡片排序
+        sortSkuCard( state, { action, index } ){
+            $util[action]( state.sku_card_data ,index )
+        },
+        // 添加规格属性
+        addSkuValue( state, index ){
+            state.sku_card_data[index].list.push({
+                name:'名称',
+                color:'',
+                img:''
+            })
+        },
+        // 删除规格属性
+        delSkuValue( state, { index1, index2 } ){
+            state.sku_card_data[index1].list.splice(index2,1)
+        },
+        // 修改规格属性
+        updateSkuValue( state, { cardIndex, index, key, value } ){
+            state.sku_card_data[cardIndex].list[index][key] = value
+        },
+        // 排序规格卡片的规格属性列表
+        sortSkuValue( state,{ cardIndex, list } ){
+            state.sku_card_data[cardIndex].list = list
         }
 
     },

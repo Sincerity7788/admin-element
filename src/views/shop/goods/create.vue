@@ -118,7 +118,17 @@
                 <!-- 多规格 -->
                 <template v-else>
                   <!-- 规格卡片 -->
-                  <skuCard></skuCard>
+                 
+                <el-form label-width="80px">
+                        <el-form-item label="添加规格">
+                             <skuCard v-for="( item, cardIndex ) in sku_card_data"
+                              :key='cardIndex' :total='sukCardTotal' :item='item' 
+                              :cardIndex='cardIndex'></skuCard>
+                            <el-button size="mini" type="success" 
+                            @click="addSkuCard">添加规格</el-button>
+                        </el-form-item>
+                    </el-form>
+
                     <el-form label-width="80px"> 
                       <el-form-item label="批量设置">
                           <el-button type="text">销售价</el-button>
@@ -345,7 +355,6 @@ import { mapState, mapMutations } from 'vuex';
             label: '组件交互文档'
           }]
         }],
-            
         }),
         components:{
           skuCard
@@ -367,17 +376,23 @@ import { mapState, mapMutations } from 'vuex';
                 cprice: state => state.goods_create.cprice,// 成本价格
                 weight: state => state.goods_create.weight,// 重量
                 volume: state => state.goods_create.volume,// 体积
+                sku_card_data: state => state.goods_create.sku_card_data
             }),
+            // 获取卡片总数
+            sukCardTotal(){
+              // console.log(this.sku_card_data.length)
+                return this.sku_card_data.length
+            },
         },
         mounted(){
-            // console.log(this.cc)
         },
         methods:{
-            ...mapMutations(['vModelState']),
+            ...mapMutations(['addSkuCard', 'vModelState']),
             // 替换v-model事件
             vModel( key, value ){
               this.vModelState( { key, value } )
             },
+            
             // 顶部菜单栏切换事件
             handleClick(){
 
