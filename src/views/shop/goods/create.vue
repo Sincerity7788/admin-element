@@ -138,7 +138,9 @@
                           <el-button type="text">体积</el-button>
                           <el-button type="text">重量</el-button>
                       </el-form-item>
-                      <el-form-item label='规格设置'>规格设置</el-form-item>
+                      <el-form-item label='规格设置'>
+                        <skuTable />
+                      </el-form-item>
                     </el-form>
                 </template>
                 
@@ -154,6 +156,8 @@
 <script>
 // 导入规格卡片
 import skuCard from '@/components/shop/goods/suk-card.vue';
+// 导入规格表格
+import skuTable from '@/components/shop/goods/sku-table.vue'
 // 导入vuex的方法
 import { mapState, mapMutations } from 'vuex';
     export default{
@@ -357,7 +361,8 @@ import { mapState, mapMutations } from 'vuex';
         }],
         }),
         components:{
-          skuCard
+          skuCard,
+          skuTable
         },
         computed:{
             ...mapState({
