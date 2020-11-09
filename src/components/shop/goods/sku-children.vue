@@ -6,7 +6,7 @@
             <el-color-picker v-if="type === 1" 
             size="mini"></el-color-picker>
             <!-- 图片选择器 -->
-            <span class="btn btn-light border" v-else>
+            <span class="btn btn-light border" @click="clooseImage" v-else>
                 <i class="el-icon-plus"></i>
             </span>
         </div>
@@ -23,6 +23,7 @@
 // 导入vuex
 import { mapMutations } from 'vuex';
     export default{
+        inject:['app'],
         props:{
             type:{
                 type:Number,
@@ -53,6 +54,14 @@ import { mapMutations } from 'vuex';
                     key, 
                     value
                 })
+            },
+            // 选择图片
+            clooseImage(){
+                this.app.show(this.resData)
+            },
+            // 接收结果的方法
+            resData(res){
+                console.log(res)
             }
         }   
     }
